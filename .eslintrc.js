@@ -25,6 +25,15 @@ module.exports = {
     "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
     "vue/no-v-html": "off",
+    "vue/html-self-closing": ["error", {
+        "html": {
+          "void": "never",
+          "normal": "always",
+          "component": "always"
+        },
+        "svg": "always",
+        "math": "always"
+      }],
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
       'before': true,
@@ -142,10 +151,10 @@ module.exports = {
     }],
     'no-unreachable': 2,
     'no-unsafe-finally': 2,
-    'no-unused-vars': [2, {
-      'vars': 'all',
-      'args': 'none'
-    }],
+    // 'no-unused-vars': [2, {
+    //   'vars': 'all',
+    //   'args': 'none'
+    // }],
     'no-useless-call': 2,
     'no-useless-computed-key': 2,
     'no-useless-constructor': 2,
