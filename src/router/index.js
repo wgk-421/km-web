@@ -10,7 +10,8 @@ const fixedRoutes = [
   {
     path: '',
     name: 'home',
-    component: () => import('@/components/HelloWorld'),
+    rediect: '/home',
+    component: () => import('@/page/home'),
     hidden: true
   },
   {

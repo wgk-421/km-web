@@ -1,4 +1,4 @@
-import { getToken, setToken, removeToken } from '@/utils/auth-token'
+import { getToken } from '@/utils/auth-token'
 // 用户的全局属性state
 const state = {
   token: getToken,
@@ -20,4 +20,8 @@ const mutations = {
     state.roles = roles
   }
 }
-
+export default {
+  namespaced: true,
+  state,
+  mutations
+}

@@ -10,8 +10,9 @@ const modulesFiles = require.context('./modules', true, /\.js/)
 const modules = modulesFiles.keys().reduce((file, path) => {
   const moduleName = path.replace(/^\.\/(.*)\.\w+$/, '$1')
   const value = modulesFiles(path)
-  modules[moduleName] = value.default
-  return modules
+  file[moduleName] = value.default
+  debugger
+  return file
 }, {})
 const store = new Vuex.Store(
   modules,
