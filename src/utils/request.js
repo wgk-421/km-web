@@ -5,7 +5,8 @@ import { getToken } from './auth-token'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.baseURL, // 请求根地址，随环境配置变化
+  // baseURL: process.env.baseURL, // 请求根地址，随环境配置变化
+  baseURL: 'http://localhost:8888',
   // withCredentials: true // 跨域请求时发送cookie
   timeout: 3000
 })
@@ -60,3 +61,5 @@ service.interceptors.response.use(
     })
   }
 )
+
+export default service

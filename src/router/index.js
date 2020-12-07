@@ -8,7 +8,7 @@ Vue.use(Router)
  */
 const fixedRoutes = [
   {
-    path: '',
+    path: '/home',
     name: 'home',
     rediect: '/home',
     component: () => import('@/page/home'),
@@ -19,22 +19,17 @@ const fixedRoutes = [
     name: 'login',
     component: () => import('@/page/login'),
     hidden: true
+  },
+  {
+    path: '/',
+    name: 'layout',
+    component: () => import('@/page/layout'),
+    hidden: true
   }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', //需要后端服务支持
+export default new Router({
+  mode: 'history', // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: fixedRoutes
 })
-
-const router = createRouter()
-
-// 导出重置路由方法
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
-
-// 导出路由
-export default router

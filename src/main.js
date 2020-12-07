@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import enLang from 'element-ui/lib/locale/lang/en'
 import store from './store'
+import './permission' // permission
 Vue.use(ElementUI, { enLang })
 
 Vue.config.productionTip = false
