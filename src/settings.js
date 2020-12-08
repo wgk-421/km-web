@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'KM系统后台',
+  title: 'K-M',
 
   /**
    * @type {boolean} true | false

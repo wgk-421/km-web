@@ -3,6 +3,7 @@ import cookie from 'js-cookie'
 const TokenKey = 'User-Auth-Token'
 
 export function getToken() {
+  debugger
   return cookie.get(TokenKey)
 }
 

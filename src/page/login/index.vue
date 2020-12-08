@@ -72,9 +72,14 @@ export default {
       this.butLoading = true
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.butLoading = false
-          console.log('登录成功')
-          this.$router.push('/')
+          debugger
+          this.loading = true
+          this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.$router.push({ path: '/' })
+            this.butLoading = false
+          }).catch(() => {
+            this.butLoading = false
+          })
         } else {
           this.butLoading = false
           console.log('参数验证不合法！')

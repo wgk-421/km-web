@@ -1,67 +1,76 @@
 import router from './router'
 import store from './store'
-// import { Message } from 'element-ui'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-// import { getToken } from '@/utils/auth-token'
+import { Message } from 'element-ui'
+import NProgress from 'nprogress' // 进度条
+import 'nprogress/nprogress.css' // 进度条样式
+import { getToken } from '@/utils/auth-token' // 登录信息里面获取token
+import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/auth-redirect', '/bind', '/register']
+const whiteList = ['/login'] // 路由白名单
 
-router.beforeEach((to, from, next) => {
+// 钩子函数(前置执行)
+router.beforeEach(async(to, from, next) => {
+  // 进度条开始
   NProgress.start()
-  // if (getToken()) {
-  const num = 1
-  if (num === 1) {
-    /* has token*/
+
+  // 页面标题
+  document.title = getPageTitle(to.meta.title)
+  debugger
+  // 用户登录token
+  const hasToken = getToken()
+
+  // 判断用户是否登录
+  if (hasToken) {
     if (to.path === '/login') {
+      // 已登录，跳转首页
       next({ path: '/' })
-      NProgress.done()
+      NProgress.done() // 进度条
     } else {
-      // if (store.getters.roles.length === 0) {
-      if (num === 1) {
-        // 判断当前用户是否已拉取完user_info信息
-        // store.dispatch('GetInfo').then(res => {
-        // 拉取user_info
-        const roles = 'admin'
-        store.dispatch('GenerateRoutes', { roles }).then(accessRoutes => {
-        // 测试 默认静态页面
-        // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
-          // 根据roles权限生成可访问的路由表
-          router.addRoutes(accessRoutes) // 动态添加可访问路由表
-          next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-        })
-        // })
-        //   .catch(err => {
-        //     store.dispatch('FedLogOut').then(() => {
-        //       Message.error(err)
-        //       next({ path: '/' })
-        //     })
-        //   })
-      } else {
+      // 获取已经登陆用户的信息
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      // 判断用户权限
+      if (hasRoles) {
         next()
-        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
-        // if (hasPermission(store.getters.roles, to.meta.roles)) {
-        //   next()
-        // } else {
-        //   next({ path: '/401', replace: true, query: { noGoBack: true }})
-        // }
-        // 可删 ↑
+      } else {
+        try {
+          // 获取用户信息
+          // 备注: 角色必须是数组 ! 例: ['admin'] or ,['developer','editor']
+          const { roles } = await store.dispatch('GetInfo')
+
+          // 通过角色生成允许访问的路由
+          // const accessRoutes = await store.dispatch('GenerateRoutes', roles)
+
+          // 动态添加路由
+          // router.addRoutes(accessRoutes)
+
+          // replace: true, 清除导航缓存
+          next({ ...to, replace: true })
+        } catch (error) {
+          // remove token and go to login page to re-login
+          await store.dispatch('ResetToken')
+          Message.error(error || '验证不通过，返回登陆页面重新登录')
+          next(`/login?redirect=${to.path}`)
+          NProgress.done()
+        }
       }
     }
   } else {
-    // 没有token
+    // 无token
     if (whiteList.indexOf(to.path) !== -1) {
-      // 在免登录白名单，直接进入
+      // 白名单，不需要重定向
       next()
     } else {
-      next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
+      // 无权限，重新登录
+      next(`/login?redirect=${to.path}`)
       NProgress.done()
     }
   }
 })
 
+// 钩子函数(后置执行)
 router.afterEach(() => {
+  // 进度条完成
   NProgress.done()
 })
