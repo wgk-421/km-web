@@ -29,7 +29,6 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.name.trim()
       return new Promise((resolve, reject) => {
-        debugger
         login(username, userInfo.password).then(response => {
           const data = response.data
           const tokenStr = data.tokenHead + data.token
@@ -46,7 +45,6 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
-          debugger
           const data = response.data
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)

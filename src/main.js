@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import enLang from 'element-ui/lib/locale/lang/en'
 import store from './store'
 import './permission' // permission
+import './assets/icons' // icon
+import './styles/element-variables.scss'
+import '@/styles/index.scss' // global css
+
 Vue.use(ElementUI, { enLang })
 
 Vue.config.productionTip = false

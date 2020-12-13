@@ -20,13 +20,12 @@ export default {
   },
   computed: {
     defaultTheme() {
-      return this.$store.state.settings.theme
+      return this.$store.state.setting.theme
     }
   },
   watch: {
     defaultTheme: {
       handler: function(val, oldVal) {
-        console.log(oldVal)
         this.theme = val
       },
       immediate: true

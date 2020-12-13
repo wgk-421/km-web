@@ -1,61 +1,48 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <!-- <div :class="{hasTagsView:needTagsView}" class="main-container"> -->
-    <!-- <div :class="{'fixed-header':fixedHeader}"> -->
-    <!-- <navbar /> -->
-    <!-- <tags-view v-if="needTagsView" /> -->
-    <!-- </div> -->
-    <!-- <app-main /> -->
-    <!-- <right-panel v-if="showSettings">
-    <settings />
-    </right-panel> -->
-    <!-- </div> -->
+  <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
+    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <sidebar class="sidebar-container" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBg : variables.menuLightBg }" />
+    <div :class="{hasTagsView:needTagsView}" class="main-container">
+      <div :class="{'fixed-header':fixedHeader}">
+        <navbar />
+        <tags-view v-if="needTagsView" />
+      </div>
+      <app-main />
+      <right-panel v-if="showSettings">
+        <settings />
+      </right-panel>
+    </div>
   </div>
 </template>
 
 <script>
-// import RightPanel from '@/components/RightPanel'
-// import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
-import { AppMain, Navbar, TagsView, Sidebar } from './components'
-// import ResizeMixin from './mixin/ResizeHandler'
-// import { mapState } from 'vuex'
+import RightPanel from '@/components/RightPanel'
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import ResizeMixin from './mixin/ResizeHandler'
+import { mapState } from 'vuex'
+import variables from '@/styles/variables.scss'
 
 export default {
   name: 'Layout',
   components: {
     AppMain,
     Navbar,
+    RightPanel,
+    Settings,
     Sidebar,
     TagsView
-  //   RightPanel,
-  //   Settings,
   },
-  // mixins: [ResizeMixin],
+  mixins: [ResizeMixin],
   computed: {
-  //   ...mapState({
-  //     sidebar: state => state.app.sidebar,
-  //     device: state => state.app.device,
-  //     showSettings: state => state.settings.showSettings,
-  //     needTagsView: state => state.settings.tagsView,
-  //     fixedHeader: state => state.settings.fixedHeader
-  //   }),
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
-    showSettings() {
-      return this.$store.state.setting.showSettings
-    },
-    needTagsView() {
-      return this.$store.state.setting.tagsView
-    },
-    fixedHeader() {
-      return this.$store.state.setting.fixedHeader
-    },
+    ...mapState({
+      theme: state => state.setting.theme,
+      sideTheme: state => state.setting.sideTheme,
+      sidebar: state => state.app.sidebar,
+      device: state => state.app.device,
+      showSettings: state => state.setting.showSettings,
+      needTagsView: state => state.setting.tagsView,
+      fixedHeader: state => state.setting.fixedHeader
+    }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -63,10 +50,10 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    },
+    variables() {
+      return variables;
     }
-  },
-  created() {
-    // debugger
   },
   methods: {
     handleClickOutside() {
@@ -83,10 +70,8 @@ export default {
   .app-wrapper {
     @include clearfix;
     position: relative;
-    height: 10px;
-    // height: 100%;
+    height: 100%;
     width: 100%;
-    background-color: aqua;
 
     &.mobile.openSidebar {
       position: fixed;

@@ -3,21 +3,21 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 进度条样式
-import { getToken } from '@/utils/auth' // 登录信息里面获取token
+import { getToken } from '@/utils/auth-token' // 登录信息里面获取token
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/auth-redirect'] // 路由白名单
+const whiteList = ['/login'] // 路由白名单
 
 // 钩子函数(前置执行)
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 进度条开始
   NProgress.start()
 
   // 页面标题
   document.title = getPageTitle(to.meta.title)
-
+  debugger
   // 用户登录token
   const hasToken = getToken()
 
@@ -40,10 +40,10 @@ router.beforeEach(async (to, from, next) => {
           const { roles } = await store.dispatch('GetInfo')
 
           // 通过角色生成允许访问的路由
-          const accessRoutes = await store.dispatch('GenerateRoutes', roles)
+          // const accessRoutes = await store.dispatch('GenerateRoutes', roles)
 
           // 动态添加路由
-          router.addRoutes(accessRoutes)
+          // router.addRoutes(accessRoutes)
 
           // replace: true, 清除导航缓存
           next({ ...to, replace: true })

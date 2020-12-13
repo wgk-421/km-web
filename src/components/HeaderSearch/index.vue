@@ -1,6 +1,6 @@
 <template>
   <div :class="{'show':show}" class="header-search">
-    <!-- <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" /> -->
+    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
     <el-select
       ref="headerSearchSelect"
       v-model="search"
@@ -12,7 +12,7 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
+      <el-option v-for="option in options" :key="option.item.path" :value="option.item" :label="option.item.title.join(' > ')" />
     </el-select>
   </div>
 </template>
@@ -70,7 +70,12 @@ export default {
       this.show = false
     },
     change(val) {
-      this.$router.push(val.path)
+      if(this.ishttp(val.path)) {
+        // http(s):// 路径新窗口打开
+        window.open(val.path, "_blank");
+      } else {
+        this.$router.push(val.path)
+      }
       this.search = ''
       this.options = []
       this.$nextTick(() => {
@@ -104,7 +109,7 @@ export default {
         if (router.hidden) { continue }
 
         const data = {
-          path: path.resolve(basePath, router.path),
+          path: !this.ishttp(router.path) ? path.resolve(basePath, router.path) : router.path,
           title: [...prefixTitle]
         }
 
@@ -134,6 +139,9 @@ export default {
       } else {
         this.options = []
       }
+    },
+    ishttp(url) {
+      return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1
     }
   }
 }

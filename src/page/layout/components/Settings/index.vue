@@ -38,10 +38,10 @@ export default {
   computed: {
     fixedHeader: {
       get() {
-        return this.$store.state.settings.fixedHeader
+        return this.$store.state.setting.fixedHeader
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('setting/changeSetting', {
           key: 'fixedHeader',
           value: val
         })
@@ -49,10 +49,10 @@ export default {
     },
     tagsView: {
       get() {
-        return this.$store.state.settings.tagsView
+        return this.$store.state.setting.tagsView
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('setting/changeSetting', {
           key: 'tagsView',
           value: val
         })
@@ -60,10 +60,10 @@ export default {
     },
     sidebarLogo: {
       get() {
-        return this.$store.state.settings.sidebarLogo
+        return this.$store.state.setting.sidebarLogo
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
+        this.$store.dispatch('setting/changeSetting', {
           key: 'sidebarLogo',
           value: val
         })
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     themeChange(val) {
-      this.$store.dispatch('settings/changeSetting', {
+      this.$store.dispatch('setting/changeSetting', {
         key: 'theme',
         value: val
       })

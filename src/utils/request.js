@@ -3,10 +3,12 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from './auth-token'
 
+
+console.log('process.env.baseURL' + process.env.baseURL)
 // 创建axios实例
 const service = axios.create({
-  // baseURL: process.env.baseURL, // 请求根地址，随环境配置变化
-  baseURL: 'http://localhost:8888',
+  baseURL: process.env.BASE_API, // 请求根地址，随环境配置变化
+  // baseURL: 'http://localhost:8888',
   // withCredentials: true // 跨域请求时发送cookie
   timeout: 3000
 })

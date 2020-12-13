@@ -1,6 +1,7 @@
-import fixedRoutes from '@/router'
+import { fixedRoutes } from '@/router/index'
 import { getRouters } from '@/api/menu'
 import Layout from '@/page/layout'
+import ParentView from '@/components/ParentView'
 
 const permission = {
   state: {
@@ -20,7 +21,8 @@ const permission = {
         // 向后端请求路由数据
         getRouters().then(res => {
           const accessedRoutes = filterAsyncRouter(res.data)
-          accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+          // accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+          console.log('accessedRoutes', accessedRoutes)
           commit('SET_ROUTES', accessedRoutes)
           resolve(accessedRoutes)
         })
@@ -36,18 +38,20 @@ function filterAsyncRouter(asyncRouterMap) {
       // Layout组件特殊处理
       if (route.component === 'Layout') {
         route.component = Layout
+      } else if (route.component === 'ParentView') {
+        route.component = ParentView
       } else {
-        route.component = loadView(route.component)
+        route.component = loadPage(route.component)
       }
     }
-    if (route.children != null && route.children && route.children.length) {
+    if (route.children != null && route.children && route.children.length > 0) {
       route.children = filterAsyncRouter(route.children)
     }
     return true
   })
 }
 
-export const loadView = (view) => { // 路由懒加载
+export const loadPage = (view) => { // 路由懒加载
   return (resolve) => require([`@/page/${view}`], resolve)
 }
 

@@ -8,11 +8,20 @@
 import { isExternal } from '@/utils/validate'
 
 export default {
+  data() {
+    return {
+      sss: ''
+    }
+  },
   props: {
     to: {
       type: String,
       required: true
     }
+  },
+  created() {
+    this.sss = this.to
+    console.log(this.sss)
   },
   computed: {
     isExternal() {
