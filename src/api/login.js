@@ -11,6 +11,14 @@ export function login(username, password) {
   })
 }
 
+// 获取验证码
+export function getCodeImg() {
+  return request({
+    url: 'admin/code',
+    method: 'get'
+  })
+}
+
 export function getInfo() {
   return request({
     url: '/admin/info',

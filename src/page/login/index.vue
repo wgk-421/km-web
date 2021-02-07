@@ -10,7 +10,7 @@
       <el-form-item label="验证码" prop="verifyCode">
         <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码" autocomplete="off" @keyup.enter.native="handleLogin"/>
         <div>
-          <img :src="codeImg" @click="getVerifyCode">
+          <img :src="codeImg" class="code-img" @click="getVerifyCode">
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberPwd" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
@@ -24,6 +24,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate' // 导入校验方法
+import { getCodeImg } from '@/api/login'
 export default {
   data() {
     // 用户名校验方法
@@ -49,6 +50,7 @@ export default {
         name: '', // 用户名
         password: '', // 密码
         verifyCode: '', // 验证码
+        uuid: '', // uuid 用户唯一标识
         rememberPwd: false // 是否记住密码
       },
       loginRules: {
@@ -59,13 +61,17 @@ export default {
     }
   },
   created() {
-
+    this.getVerifyCode()
   },
   methods: {
     validateName() {
       console.log('校验方')
     },
     getVerifyCode() {
+      getCodeImg().then(res => {
+        this.codeImg = res.img
+        this.loginForm.uuid = res.uuid
+      })
       console.log('获取验证码')
     },
     handleLogin() {
