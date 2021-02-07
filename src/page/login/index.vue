@@ -72,9 +72,15 @@ export default {
       this.butLoading = true
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.butLoading = false
-          console.log('登录成功')
+          this.loading = true
+          this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.$router.push({ path: '/' })
+            this.butLoading = false
+          }).catch(() => {
+            this.butLoading = false
+          })
         } else {
+          this.butLoading = false
           console.log('参数验证不合法！')
           return false
         }
@@ -89,57 +95,4 @@ export default {
 </script>
 
 <style lang="scss">
-// // 定义通用变量
-// // $bg:#626e7e;
-// $light_gray:#fff;
-// $cursor: #fff;
-// .login-class .el-input input {
-//   color: $cursor;
-// }
-// .login-class {
-//   .el-input {
-//     display: inline-block;
-//     height: 47px;
-//     width: 85%;
-
-//     input {
-//       background: transparent;
-//       border: 0px;
-//       -webkit-appearance: none;
-//       border-radius: 0px;
-//       padding: 12px 5px 12px 15px;
-//       color: $light_gray;
-//       height: 47px;
-//       caret-color: $cursor;
-//     }
-//   }
-
-//   .el-form-item {
-//     // border: 1px solid rgba(255, 255, 255, 0.1);
-//     // background: rgba(221, 179, 179, 0.1);
-//     border-radius: 5px;
-//     color: #f0ebeb;
-//   }
-// }
-// </style>
-// <style lang="scss" scoped>
-// // $bg:#2d3a4b;
-// $dark_gray:#889aa4;
-// $light_gray:#eee;
-
-// .login-class {
-//   min-height: 100%;
-//   width: 100%;
-//   // background-color: $bg;
-//   overflow: hidden;
-
-//   .login-form {
-//     position: relative;
-//     width: 520px;
-//     max-width: 100%;
-//     padding: 160px 35px 0;
-//     margin: 0 auto;
-//     overflow: hidden;
-//   }
-// }
 </style>
