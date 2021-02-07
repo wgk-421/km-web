@@ -39,20 +39,21 @@ export const fixedRoutes = [
     path: '/login',
     component: (resolve) => require(['@/page/login'], resolve),
     hidden: true
-  },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'index',
-    children: [
-      {
-        path: 'index',
-        component: (resolve) => require(['@/page/home'], resolve),
-        name: '首页',
-        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
-      }
-    ]
   }
+  // ,
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: (resolve) => require(['@/page/home'], resolve),
+  //       name: '首页',
+  //       meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
+  //     }
+  //   ]
+  // }
 ]
 
 export default new Router({
